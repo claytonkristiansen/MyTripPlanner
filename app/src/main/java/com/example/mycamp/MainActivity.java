@@ -70,11 +70,11 @@ public class MainActivity extends AppCompatActivity
         txt = ((TextView) findViewById(R.id.dateText));
         txt.setText("food");
 
-        recommendationsList = (RecyclerView) findViewById(R.id.my_recycler_view);
-        recListLayoutManager = new LinearLayoutManager(this);
-        recommendationsList.setLayoutManager(recListLayoutManager);
-        recListAdapter = new MyHikingTrailAdapter(dataSet);
-        recommendationsList.setAdapter(recListAdapter);
+//        recommendationsList = (RecyclerView) findViewById(R.id.my_recycler_view);
+//        recListLayoutManager = new LinearLayoutManager(this);
+//        recommendationsList.setLayoutManager(recListLayoutManager);                                //UNCOMMENT
+//        recListAdapter = new MyHikingTrailAdapter(dataSet);
+//        recommendationsList.setAdapter(recListAdapter);
 
         myTask.execute(findViewById(R.id.dateText));
     }
