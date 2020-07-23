@@ -1,16 +1,19 @@
 package com.example.mycamp;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 
+import androidx.annotation.DrawableRes;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class MyHikingTrailAdapter extends RecyclerView.Adapter<MyHikingTrailAdapter.MyViewHolder> {
-    private HikingTrail[] m_dataSet;
+    public HikingTrail[] m_dataSet;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -45,9 +48,12 @@ public class MyHikingTrailAdapter extends RecyclerView.Adapter<MyHikingTrailAdap
     public void onBindViewHolder(MyViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        ((TextView)holder.m_v.findViewById(R.id.text1)).setText(m_dataSet[position].GetName());
-        ((Button)holder.m_v.findViewById(R.id.button1)).setText(m_dataSet[position].GetAddress());
+        Context c = holder.m_v.getContext();
 
+        ((TextView)holder.m_v.findViewById(R.id.text1)).setText(m_dataSet[position].GetName());
+        //((Button)holder.m_v.findViewById(R.id.button1)).setText(m_dataSet[position].GetAddress());
+        ((ImageView)holder.m_v.findViewById(R.id.imageView1)).setImageResource(m_dataSet[position].GetImageId());
+        ((TextView)holder.m_v.findViewById(R.id.text2)).setText(((Integer)m_dataSet[position].number).toString());
     }
 
     // Return the size of your dataset (invoked by the layout manager)
