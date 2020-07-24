@@ -5,11 +5,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
 import androidx.annotation.DrawableRes;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class MyHikingTrailAdapter extends RecyclerView.Adapter<MyHikingTrailAdapter.MyViewHolder> {
@@ -54,6 +57,13 @@ public class MyHikingTrailAdapter extends RecyclerView.Adapter<MyHikingTrailAdap
         //((Button)holder.m_v.findViewById(R.id.button1)).setText(m_dataSet[position].GetAddress());
         ((ImageView)holder.m_v.findViewById(R.id.imageView1)).setImageResource(m_dataSet[position].GetImageId());
         ((TextView)holder.m_v.findViewById(R.id.text2)).setText(((Integer)m_dataSet[position].number).toString());
+        if(true)
+        {
+            CardView myCardView = (CardView)holder.m_v;
+            EditText myEditText = new EditText(c);
+            myCardView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+            myCardView.addView(myEditText);
+        }
     }
 
     // Return the size of your dataset (invoked by the layout manager)

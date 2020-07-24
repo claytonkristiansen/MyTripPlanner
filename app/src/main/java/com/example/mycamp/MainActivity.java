@@ -2,6 +2,7 @@ package com.example.mycamp;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 //import com.example.mycamp.MyCardView;
@@ -14,6 +15,8 @@ import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -136,6 +139,11 @@ public class MainActivity extends AppCompatActivity
         {
             timeToggle = false;
         }
+
+//        ConstraintLayout myCardView = findViewById(R.id.main);
+//        EditText myEditText = new EditText(c);
+//        myCardView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
+//        myCardView.addView(myEditText);
     }
 
     public void CardClick(View view)
