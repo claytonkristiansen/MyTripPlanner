@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
@@ -59,10 +60,15 @@ public class MyHikingTrailAdapter extends RecyclerView.Adapter<MyHikingTrailAdap
         ((TextView)holder.m_v.findViewById(R.id.text2)).setText(((Integer)m_dataSet[position].number).toString());
         if(true)
         {
-            CardView myCardView = (CardView)holder.m_v;
+            RelativeLayout myRelativeLayout = (RelativeLayout) holder.m_v.findViewById(R.id.RelLayout);
+            RelativeLayout.LayoutParams editTextParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+//            editTextParams.addRule(RelativeLayout.ALIGN_LEFT, 0);
+//            editTextParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+//            editTextParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+//            editTextParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
             EditText myEditText = new EditText(c);
-            myCardView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-            myCardView.addView(myEditText);
+            myEditText.setLayoutParams(editTextParams);
+            //myRelativeLayout.addView(myEditText);
         }
     }
 

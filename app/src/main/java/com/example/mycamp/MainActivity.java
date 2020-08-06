@@ -21,7 +21,35 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import java.net.MalformedURLException;
 import java.util.Date;
+
+//import com.google.common.util.concurrent.FutureCallback;
+//import com.google.common.util.concurrent.Futures;
+//import com.google.common.util.concurrent.ListenableFuture;
+//import com.google.common.util.concurrent.SettableFuture;
+
+
+import com.microsoft.windowsazure.mobileservices.MobileServiceClient;
+import com.microsoft.windowsazure.mobileservices.http.NextServiceFilterCallback;
+import com.microsoft.windowsazure.mobileservices.http.OkHttpClientFactory;
+import com.microsoft.windowsazure.mobileservices.http.ServiceFilter;
+import com.microsoft.windowsazure.mobileservices.http.ServiceFilterRequest;
+import com.microsoft.windowsazure.mobileservices.http.ServiceFilterResponse;
+import com.microsoft.windowsazure.mobileservices.table.MobileServiceTable;
+import com.microsoft.windowsazure.mobileservices.table.query.Query;
+import com.microsoft.windowsazure.mobileservices.table.query.QueryOperations;
+import com.microsoft.windowsazure.mobileservices.table.sync.MobileServiceSyncContext;
+import com.microsoft.windowsazure.mobileservices.table.sync.MobileServiceSyncTable;
+import com.microsoft.windowsazure.mobileservices.table.sync.localstore.ColumnDataType;
+import com.microsoft.windowsazure.mobileservices.table.sync.localstore.MobileServiceLocalStoreException;
+import com.microsoft.windowsazure.mobileservices.table.sync.localstore.SQLiteLocalStore;
+import com.microsoft.windowsazure.mobileservices.table.sync.synchandler.SimpleSyncHandler;
+
+
+//import okhttp3.OkHttpClient;
+
+//import static com.microsoft.windowsazure.mobileservices.table.query.QueryOperations.*;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -32,6 +60,12 @@ public class MainActivity extends AppCompatActivity
     private Integer number = 0;
     private Date date = new Date();
     private Context c = this;
+
+    /**
+     * Client reference
+     */
+    private MobileServiceClient mClient;
+    private MobileServiceTable<ToDoItem> mTable;
 
     //RecyclerView stuff
     private RecyclerView recommendationsList;
@@ -76,14 +110,25 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
-        //String teext = "TACOBOI";
-        //((Button) findViewById(R.id.button)).setText(teext);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         txt = ((TextView) findViewById(R.id.dateText));
         txt = ((TextView) findViewById(R.id.dateText));
         txt.setText("food");
+
+        //--------------------------------------------------------------------------------------------//
+
+        String url = "https://mycamp1.azurewebsites.net";
+        try
+        {
+            mClient = new MobileServiceClient(url, this);
+        } catch (MalformedURLException e)
+        {
+            e.printStackTrace();
+        }
+
+        mTable = mClient.getTable(ToDoItem.class);
 
         //--------------------------------------------------------------------------------------------//
 
@@ -102,7 +147,7 @@ public class MainActivity extends AppCompatActivity
 
         recommendationsList = (RecyclerView) findViewById(R.id.my_recycler_view);
         recListLayoutManager = new LinearLayoutManager(this);
-        recommendationsList.setLayoutManager(recListLayoutManager);                                //UNCOMMENT
+        recommendationsList.setLayoutManager(recListLayoutManager);
         recListAdapter = new MyHikingTrailAdapter(dataSet);
         recommendationsList.setAdapter(recListAdapter);
 
