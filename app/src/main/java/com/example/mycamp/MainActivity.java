@@ -10,6 +10,9 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.TextView;
 
+import com.microsoft.windowsazure.mobileservices.MobileServiceClient;
+
+import java.net.MalformedURLException;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity
@@ -35,6 +38,9 @@ public class MainActivity extends AppCompatActivity
             new HikingTrail("Rattlesnake Ledge", "add7", false, false, 0),
             new HikingTrail("MailBox Peak Falls", "add8", false, false, 0)
     };
+
+    MobileServiceClient msClient;
+    MobileServiceTable<Trip>
 
     class UpDateUITask extends AsyncTask<View, String, String>
     {
@@ -69,6 +75,14 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         txt = ((TextView) findViewById(R.id.dateText));
         txt.setText("food");
+
+        try {
+            msClient = new MobileServiceClient(
+                    "https://mytripplanner.azurewebsites.net",
+                    this);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
 
 //        recommendationsList = (RecyclerView) findViewById(R.id.my_recycler_view);
 //        recListLayoutManager = new LinearLayoutManager(this);
