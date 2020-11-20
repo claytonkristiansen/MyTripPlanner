@@ -21,6 +21,7 @@ import com.microsoft.windowsazure.mobileservices.table.MobileServiceTable;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity
     private Integer number = 0;
     private Date date = new Date();
     Gson gsonBuilder = new Gson();
+    TextView testText;
 
     URL databaseUrl;
     HttpURLConnection databaseConnection;
@@ -71,8 +73,7 @@ public class MainActivity extends AppCompatActivity
 
 
 
-    public MainActivity() throws MalformedURLException {
-    }
+
 
     class UpDateUITask extends AsyncTask<View, String, String>
     {
@@ -95,7 +96,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    class NetworkTask extends AsyncTask<Void, Void, Void>
+    class NetworkTask extends AsyncTask<View, Void, Void>
     {
         @Override
         protected void onPreExecute()
@@ -104,64 +105,60 @@ public class MainActivity extends AppCompatActivity
         }
 
         @Override
-        protected Void doInBackground(Void... voids)
+        protected Void doInBackground(View... voids)
         {
+            try
+            {
+                String tableName = "Trips";
+                databaseUrl = new URL("https://mytripplannerappservice.azurewebsites.net/api/" + tableName + "/");
+                databaseConnection = (HttpURLConnection) databaseUrl.openConnection();
+                databaseConnection.setRequestMethod("GET");
+                databaseConnection.setDoOutput(true);
+                databaseConnection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
 
-            try {
-                results = msTable.execute().get();
 
-                //Offline Sync
-                //final List<ToDoItem> results = refreshItemsFromMobileServiceTableSyncTable();
 
-            } catch (final Exception e){
+                Trip testTrip = new Trip("Cool", "FROM ANDROID APP", "8-24-2020", "8-30-2020");
 
+                String tripJSON = gsonBuilder.toJson(testTrip);
+                Trip tempTrip = gsonBuilder.fromJson(tripJSON, Trip.class);
+
+                //testText.setText("YES IT DID!");
+
+
+
+
+                InputStream input = databaseConnection.getInputStream();
+                InputStreamReader iReader = new InputStreamReader(input);
+                BufferedReader bReader = new BufferedReader(iReader);
+                String content  = bReader.readLine();
+
+
+
+                OutputStream o = databaseConnection.getOutputStream();
+
+                DataOutputStream out = new DataOutputStream(o);
+                out.write(tripJSON.getBytes());
+                out.flush();
+                out.close();
+
+                BufferedReader reponse = new BufferedReader(new InputStreamReader(databaseConnection.getInputStream()));
+
+                String inputLine;
+                StringBuffer responseString = new StringBuffer();
+
+                while ((inputLine = reponse.readLine()) != null)
+                {
+                    responseString.append(inputLine);
+                }
+
+            } catch (MalformedURLException e)
+            {
+                e.printStackTrace();
+            } catch (IOException e)
+            {
+                e.printStackTrace();
             }
-
-
-
-
-            //try {
-
-
-
-
-//                String tableName = "Trips";
-//                databaseUrl = new URL("https://mytripplannerappservice.azurewebsites.net/api/" + tableName + "/");
-//                databaseConnection = (HttpURLConnection) databaseUrl.openConnection();
-//                databaseConnection.setRequestMethod("POST");
-//                databaseConnection.setDoOutput(true);
-//                databaseConnection.setRequestProperty("Content-Type", "application/json; charset=utf-8");
-//
-//
-//
-//                Trip testTrip = new Trip(0, "FROM ANDROID APP", "8-24-2020", "8-30-2020");
-//
-//                String tripJSON = gsonBuilder.toJson(testTrip);
-//                Trip tempTrip = gsonBuilder.fromJson(tripJSON, Trip.class);
-//
-//
-//
-//                OutputStream o = databaseConnection.getOutputStream();
-//
-//                DataOutputStream out = new DataOutputStream(o);56
-//                out.write(tripJSON.getBytes());
-//                out.flush();
-//                out.close();
-//
-//                BufferedReader reponse = new BufferedReader(new InputStreamReader(databaseConnection.getInputStream()));
-//
-//                String inputLine;
-//                StringBuffer responseString = new StringBuffer();
-//
-//                while ((inputLine = reponse.readLine()) != null) {
-//                    responseString.append(inputLine);
-//                }
-//
-//            } catch (MalformedURLException e) {
-//                e.printStackTrace();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
             return null;
         }
 
@@ -177,7 +174,7 @@ public class MainActivity extends AppCompatActivity
 
     ArrayList<NetworkTask> networkTaskArrayList = new ArrayList<NetworkTask>();
 
-    NetworkTask tempTask;// = new NetworkTask();
+    //NetworkTask tempTask = new NetworkTask();
 
     private UpDateUITask myTask = new UpDateUITask();
 
@@ -192,35 +189,7 @@ public class MainActivity extends AppCompatActivity
         txt = ((TextView) findViewById(R.id.dateText));
         txt.setText("food");
 
-
-        try
-        {
-            msClient = new MobileServiceClient("https://mytripplanner.azurewebsites.net", this);
-
-            msClient.setAndroidHttpClientFactory(new OkHttpClientFactory() {
-                @Override
-                public OkHttpClient createOkHttpClient() {
-                    OkHttpClient client = new OkHttpClient.Builder()
-                            .connectTimeout(20, TimeUnit.SECONDS)
-                            .readTimeout(20, TimeUnit.SECONDS)
-                            .build();
-
-                    return client;
-                }
-            });
-
-            msTable = msClient.getTable(Trip.class);
-
-            Trip tempTrip = new Trip("Shi Shi", "10-10-2021", "10-20-2021", "Washington");
-            msTable.insert(tempTrip);
-
-
-        }
-        catch (MalformedURLException e)
-        {
-            e.printStackTrace();
-        }
-
+        testText = ((TextView) findViewById(R.id.textView));
 
 //        recommendationsList = (RecyclerView) findViewById(R.id.my_recycler_view);
 //        recListLayoutManager = new LinearLayoutManager(this);
@@ -228,10 +197,6 @@ public class MainActivity extends AppCompatActivity
 //        recListAdapter = new MyHikingTrailAdapter(dataSet);
 //        recommendationsList.setAdapter(recListAdapter);
 
-
-        //myNetworkTask.execute();
-
-        //myTask.execute(findViewById(R.id.dateText));
     }
 
     private void updateUI(View view)
@@ -277,9 +242,10 @@ public class MainActivity extends AppCompatActivity
         {
             timeToggle = false;
         }
-        NetworkTask myTask = new NetworkTask();
+        NetworkTask myNetworkTask = new NetworkTask();
+        myNetworkTask.execute(testText);
         //networkTaskArrayList.add(myTask);
-        myTask.execute();
+        myTask.execute((TextView)findViewById(R.id.dateText));
 
         Integer i = networkTaskArrayList.size();
 

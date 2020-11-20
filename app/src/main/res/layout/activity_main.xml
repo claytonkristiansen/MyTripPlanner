@@ -23,8 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="320dp"
-        android:layout_marginLeft="320dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="136dp"
         android:background="#FFFFFF"
         android:onClick="sendMessage"
         android:text="@string/button_send"
@@ -38,6 +37,16 @@
         android:layout_height="32dp"
         tools:layout_editor_absoluteX="125dp"
         tools:layout_editor_absoluteY="133dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="173dp"
+        android:layout_marginTop="283dp"
+        android:text="IT WORKED"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

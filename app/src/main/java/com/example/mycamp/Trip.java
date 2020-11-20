@@ -8,9 +8,6 @@ public class Trip
     @com.google.gson.annotations.SerializedName("name")
     private String m_name;
 
-    @com.google.gson.annotations.SerializedName("complete")
-    private boolean m_complete;
-
     @com.google.gson.annotations.SerializedName("startDate")
     private String m_startDate;
 
@@ -20,8 +17,17 @@ public class Trip
     @com.google.gson.annotations.SerializedName("location")
     private String m_location;
 
-//    @com.google.gson.annotations.SerializedName("EndDate")
-//    private String m_endDate;
+    @com.google.gson.annotations.SerializedName("complete")
+    private boolean m_complete;
+
+    @com.google.gson.annotations.SerializedName("GuestListId")
+    private boolean m_guestListId;
+
+    @com.google.gson.annotations.SerializedName("ownerId")
+    private boolean m_ownerId;
+
+    @com.google.gson.annotations.SerializedName("campList")
+    private boolean m_campList;
 
 
 
